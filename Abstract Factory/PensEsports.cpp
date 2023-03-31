@@ -47,6 +47,7 @@ public:
 class Legion : public MobileLegends
 {
 private:
+
 public:
     void displayTeam() override
     {
@@ -63,6 +64,7 @@ public:
 class Reborn : public MobileLegends
 {
 private:
+
 public:
     void displayTeam() override
     {

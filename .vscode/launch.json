@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/LENOVO/Documents/Code/design-pattern-programming/Abstract Factory",
-      "program": "c:/Users/LENOVO/Documents/Code/design-pattern-programming/Abstract Factory/build/Debug/outDebug",
+      "cwd": "c:/Users/LENOVO/Documents/Code/design-pattern-programming/Builder",
+      "program": "c:/Users/LENOVO/Documents/Code/design-pattern-programming/Builder/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
