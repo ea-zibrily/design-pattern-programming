@@ -1,0 +1,99 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class AlarmListener
+{
+public:
+    virtual void alarm() = 0;
+};
+
+class SensorSystem
+{
+private:
+    vector<AlarmListener*> listeners;
+
+public:
+    void attach(AlarmListener *al)
+    {
+        listeners.push_back(al);
+    }
+    void soundTheAlarm()
+    {
+        for (int i = 0; i < listeners.size(); i++)
+        {
+            listeners[i]->alarm();
+        }
+    }
+};
+
+class Lighting : public AlarmListener
+{
+public:
+    void alarm() override
+    {
+        cout << "lights up" << '\n';
+    }
+};
+
+class Gates : public AlarmListener
+{
+public:
+    void alarm() override
+    {
+        cout << "gates close" << '\n';
+    }
+};
+
+class CheckList
+{
+private:
+    virtual void localize()
+    {
+        cout << "   establish a perimeter" << '\n';
+    }
+    virtual void isolate()
+    {
+        cout << "   isolate the grid" << '\n';
+    }
+    virtual void identify()
+    {
+        cout << "   identify the source" << '\n';
+    }
+
+public:
+    void byTheNumbers()
+    {
+        // Template Method design pattern
+        localize();
+        isolate();
+        identify();
+    }
+};
+
+class Surveillance : public CheckList, public AlarmListener
+{
+private:
+    void isolate() override
+    {
+        cout << "   train the cameras" << '\n';
+    }
+
+public:
+    void alarm() override
+    {
+        cout << "Surveillance - by the numbers:" << '\n';
+        byTheNumbers();
+    }
+};
+
+int main()
+{
+    SensorSystem ss;
+
+    cout << "Sensor System Observer Pattern Example" << endl;
+    ss.attach(new Gates);
+    ss.attach(new Lighting);
+    ss.attach(new Surveillance);
+    ss.soundTheAlarm();
+}
