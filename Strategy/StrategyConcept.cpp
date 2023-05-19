@@ -1,16 +1,11 @@
 #include <iostream>
 #include <memory>
-#include <string>
 #include <algorithm>
 using namespace std;
 
-/**
- * The Strategy interface declares operations common to all supported versions
- * of some algorithm.
- *
- * The Context uses this interface to call the algorithm defined by Concrete
- * Strategies.
- */
+// Base class Strategy
+// Class ini nantinya akan diturunkan ke beberapa class turunan
+// Dimana tiap class turunan akan mengimplementasikan algoritma yang berbeda
 class Strategy
 {
 public:
@@ -18,54 +13,39 @@ public:
     virtual string doAlgorithm(string_view data) const = 0;
 };
 
-/**
- * The Context defines the interface of interest to clients.
- */
-
 class Context
 {
-    /**
-     * @var Strategy The Context maintains a reference to one of the Strategy
-     * objects. The Context does not know the concrete class of a strategy. It
-     * should work with all strategies via the Strategy interface.
-     */
 private:
     unique_ptr<Strategy> strategy_;
-    /**
-     * Usually, the Context accepts a strategy through the constructor, but also
-     * provides a setter to change it at runtime.
-     */
+
 public:
-    explicit Context(unique_ptr<Strategy> &&strategy = {}) : strategy_(move(strategy))
-    {
-    }
-    /**
-     * Usually, the Context allows replacing a Strategy object at runtime.
-     */
+    explicit Context(unique_ptr<Strategy> &&strategy = {}) : strategy_(move(strategy)) {}
+
+    // Method ini berfungsi untuk mengubah class yang ingin digunakan
     void set_strategy(unique_ptr<Strategy> &&strategy)
     {
         strategy_ = move(strategy);
     }
-    /**
-     * The Context delegates some work to the Strategy object instead of
-     * implementing +multiple versions of the algorithm on its own.
-     */
+
+    // Method ini berfungsi untuk menjalankan
+    // Algoritma yang ada di dalam class Strategy
     void doSomeBusinessLogic() const
     {
-        if (strategy_) {
+        if (strategy_)
+        {
             cout << "Context: Sorting data using the strategy (not sure how it'll do it)\n";
             string result = strategy_->doAlgorithm("aecbd");
             cout << result << "\n";
-        } else {
+        }
+        else
+        {
             cout << "Context: Strategy isn't set\n";
         }
     }
 };
 
-/**
- * Concrete Strategies implement the algorithm while following the base Strategy
- * interface. The interface makes them interchangeable in the Context.
- */
+// Concrete class Strategy
+// Class ini berisi Algoritma dari ConcreteStrategyA
 class ConcreteStrategyA : public Strategy
 {
 public:
@@ -77,6 +57,10 @@ public:
         return result;
     }
 };
+
+// Concrete class Strategy
+// Class ini berisi Algoritma dari ConcreteStrategyB
+
 class ConcreteStrategyB : public Strategy
 {
     string doAlgorithm(string_view data) const override
@@ -87,11 +71,10 @@ class ConcreteStrategyB : public Strategy
         return result;
     }
 };
-/**
- * The client code picks a concrete strategy and passes it to the context. The
- * client should be aware of the differences between strategies in order to make
- * the right choice.
- */
+
+// Function ini berfungsi sebagai pengganti main()
+// Dalam artian, semua code akan dijalankan di dalam function ini
+// Lalu, function ini akan dipanggil dalam main()
 
 void clientCode()
 {
@@ -99,7 +82,7 @@ void clientCode()
 
     cout << "Client: Strategy is set to normal sorting.\n";
     context.doSomeBusinessLogic();
-    
+
     cout << "\n";
     cout << "Client: Strategy is set to reverse sorting.\n";
     context.set_strategy(make_unique<ConcreteStrategyB>());
@@ -109,5 +92,6 @@ void clientCode()
 int main()
 {
     clientCode();
+
     return 0;
 }
